@@ -19,4 +19,14 @@ pub impl Corner of PieceTrait {
             _ => 0,
         }
     }
+
+    #[inline]
+    fn size(orientation: Orientation) -> (u8, u8) {
+        (2, 2)
+    }
+
+    #[inline]
+    fn score() -> u8 {
+        3
+    }
 }

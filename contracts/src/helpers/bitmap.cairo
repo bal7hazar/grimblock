@@ -7,8 +7,8 @@ pub trait BitmapTrait<T> {
     fn get(x: T, index: u8) -> u8;
     fn set(x: T, index: u8) -> T;
     fn unset(x: T, index: u8) -> T;
-    fn most_significant_bit(x: T) -> Option<u8>;
-    fn least_significant_bit(x: T) -> Option<u8>;
+    fn most_significant_bit(x: T) -> u8;
+    fn least_significant_bit(x: T) -> u8;
 }
 
 pub impl Bitmap<
@@ -80,10 +80,10 @@ pub impl Bitmap<
     /// #### Returns
     /// * The index of the most significant bit
     #[inline]
-    fn most_significant_bit(x: T) -> Option<u8> {
+    fn most_significant_bit(x: T) -> u8 {
         let mut x: u256 = x.into();
         if x == 0_u8.into() {
-            return Option::None;
+            return 0;
         }
         let mut r: u8 = 0;
 
@@ -118,7 +118,7 @@ pub impl Bitmap<
         if x >= 0x2 {
             r += 1;
         }
-        Option::Some(r)
+        r
     }
 
     /// The index of the least significant bit of the number,
@@ -128,10 +128,10 @@ pub impl Bitmap<
     /// #### Returns
     /// * The index of the least significant bit
     #[inline]
-    fn least_significant_bit(x: T) -> Option<u8> {
+    fn least_significant_bit(x: T) -> u8 {
         let mut x: u256 = x.into();
         if x == 0 {
-            return Option::None;
+            return 0;
         }
         let mut r: u8 = 255;
 
@@ -173,7 +173,7 @@ pub impl Bitmap<
         if x > 0 {
             r -= 1;
         }
-        Option::Some(r)
+        r
     }
 }
 

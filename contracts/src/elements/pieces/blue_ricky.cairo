@@ -19,4 +19,18 @@ pub impl BlueRicky of PieceTrait {
             _ => 0,
         }
     }
+
+    #[inline]
+    fn size(orientation: Orientation) -> (u8, u8) {
+        match orientation {
+            Orientation::Up | Orientation::Down => (2, 3),
+            Orientation::Left | Orientation::Right => (3, 2),
+            _ => (0, 0),
+        }
+    }
+
+    #[inline]
+    fn score() -> u8 {
+        4
+    }
 }

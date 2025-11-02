@@ -17,4 +17,18 @@ pub impl Hero of PieceTrait {
             _ => 0,
         }
     }
+
+    #[inline]
+    fn size(orientation: Orientation) -> (u8, u8) {
+        match orientation {
+            Orientation::Up | Orientation::Down => (4, 1),
+            Orientation::Left | Orientation::Right => (1, 4),
+            _ => (0, 0),
+        }
+    }
+
+    #[inline]
+    fn score() -> u8 {
+        4
+    }
 }

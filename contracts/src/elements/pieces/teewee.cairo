@@ -1,6 +1,6 @@
 use super::interface::{Orientation, PieceTrait};
 
-pub impl RhodeIsland of PieceTrait {
+pub impl Teewee of PieceTrait {
     #[inline]
     fn get(orientation: Orientation) -> u64 {
         // - - - - - - - -
@@ -9,11 +9,13 @@ pub impl RhodeIsland of PieceTrait {
         // - - - - - - - -
         // - - - - - - - -
         // - - - - - - - -
-        // - - - - - - 1 1
-        // - - - - - 1 1 -
+        // - - - - - - 1 -
+        // - - - - - 1 1 1
         match orientation {
-            Orientation::Up | Orientation::Down => 0b00000011_00000110,
-            Orientation::Left | Orientation::Right => 0b00000010_00000011_00000001,
+            Orientation::Up => 0b00000010_00000111,
+            Orientation::Down => 0b00000111_00000010,
+            Orientation::Left => 0b00000001_00000011_00000001,
+            Orientation::Right => 0b00000010_00000011_00000010,
             _ => 0,
         }
     }

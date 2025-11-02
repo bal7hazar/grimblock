@@ -1,7 +1,7 @@
 use crate::elements::pieces;
 use crate::types::orientation::Orientation;
 
-pub const PIECE_COUNT: u8 = 13;
+pub const PIECE_COUNT: u8 = 14;
 
 #[derive(PartialEq, Copy, Drop, Debug)]
 pub enum Piece {
@@ -18,14 +18,15 @@ pub enum Piece {
     Smashboy,
     SuperHero,
     Tallboy,
+    Teewee,
     Triomino,
 }
 
 #[generate_trait]
 pub impl PieceImpl of PieceTrait {
     #[inline]
-    fn draw(seed: u256) -> Piece {
-        (1_u8 + (seed.low % PIECE_COUNT.into()).try_into().unwrap()).into()
+    fn draw(seed: u128) -> Piece {
+        (1_u8 + (seed % PIECE_COUNT.into()).try_into().unwrap()).into()
     }
 
     #[inline]
@@ -44,7 +45,50 @@ pub impl PieceImpl of PieceTrait {
             Piece::Smashboy => pieces::smashboy::SmashBoy::get(orientation),
             Piece::SuperHero => pieces::super_hero::SuperHero::get(orientation),
             Piece::Tallboy => pieces::tallboy::TallBoy::get(orientation),
+            Piece::Teewee => pieces::teewee::Teewee::get(orientation),
             Piece::Triomino => pieces::triomino::Triomino::get(orientation),
+        }
+    }
+
+    #[inline]
+    fn size(self: Piece, orientation: Orientation) -> (u8, u8) {
+        match self {
+            Piece::None => (0, 0),
+            Piece::BigBoy => pieces::bigboy::BigBoy::size(orientation),
+            Piece::BlueRicky => pieces::blue_ricky::BlueRicky::size(orientation),
+            Piece::ClevelandZ => pieces::cleveland_z::ClevelandZ::size(orientation),
+            Piece::Corner => pieces::corner::Corner::size(orientation),
+            Piece::Domino => pieces::domino::Domino::size(orientation),
+            Piece::Hero => pieces::hero::Hero::size(orientation),
+            Piece::LargeCorner => pieces::large_corner::LargeCorner::size(orientation),
+            Piece::OrangeRicky => pieces::orange_ricky::OrangeRicky::size(orientation),
+            Piece::RhodeIsland => pieces::rhode_island::RhodeIsland::size(orientation),
+            Piece::Smashboy => pieces::smashboy::SmashBoy::size(orientation),
+            Piece::SuperHero => pieces::super_hero::SuperHero::size(orientation),
+            Piece::Tallboy => pieces::tallboy::TallBoy::size(orientation),
+            Piece::Teewee => pieces::teewee::Teewee::size(orientation),
+            Piece::Triomino => pieces::triomino::Triomino::size(orientation),
+        }
+    }
+
+    #[inline]
+    fn score(self: Piece) -> u8 {
+        match self {
+            Piece::None => 0,
+            Piece::BigBoy => pieces::bigboy::BigBoy::score(),
+            Piece::BlueRicky => pieces::blue_ricky::BlueRicky::score(),
+            Piece::ClevelandZ => pieces::cleveland_z::ClevelandZ::score(),
+            Piece::Corner => pieces::corner::Corner::score(),
+            Piece::Domino => pieces::domino::Domino::score(),
+            Piece::Hero => pieces::hero::Hero::score(),
+            Piece::LargeCorner => pieces::large_corner::LargeCorner::score(),
+            Piece::OrangeRicky => pieces::orange_ricky::OrangeRicky::score(),
+            Piece::RhodeIsland => pieces::rhode_island::RhodeIsland::score(),
+            Piece::Smashboy => pieces::smashboy::SmashBoy::score(),
+            Piece::SuperHero => pieces::super_hero::SuperHero::score(),
+            Piece::Tallboy => pieces::tallboy::TallBoy::score(),
+            Piece::Teewee => pieces::teewee::Teewee::score(),
+            Piece::Triomino => pieces::triomino::Triomino::score(),
         }
     }
 }
@@ -66,7 +110,8 @@ pub impl PieceIntoU64 of Into<Piece, u8> {
             Piece::Smashboy => 10,
             Piece::SuperHero => 11,
             Piece::Tallboy => 12,
-            Piece::Triomino => 13,
+            Piece::Teewee => 13,
+            Piece::Triomino => 14,
         }
     }
 }
@@ -88,7 +133,8 @@ pub impl PieceFromU64 of Into<u8, Piece> {
             10 => Piece::Smashboy,
             11 => Piece::SuperHero,
             12 => Piece::Tallboy,
-            13 => Piece::Triomino,
+            13 => Piece::Teewee,
+            14 => Piece::Triomino,
             _ => Piece::None,
         }
     }

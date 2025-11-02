@@ -1,6 +1,14 @@
+pub mod constants;
+pub mod store;
+
+pub mod components {
+    pub mod playable;
+}
+
 pub mod models {
     pub mod game;
     pub mod index;
+    pub mod player;
 }
 
 pub mod types {
@@ -24,11 +32,15 @@ pub mod elements {
         pub mod smashboy;
         pub mod super_hero;
         pub mod tallboy;
+        pub mod teewee;
         pub mod triomino;
     }
 }
 
 pub mod helpers {
     pub mod bitmap;
+    pub mod packer;
     pub mod power;
+    pub mod seeder;
+    pub mod spreader;
 }

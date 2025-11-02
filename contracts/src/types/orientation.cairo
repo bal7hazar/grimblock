@@ -12,8 +12,8 @@ pub enum Orientation {
 #[generate_trait]
 pub impl OrientationImpl of OrientationTrait {
     #[inline]
-    fn draw(seed: u256) -> Orientation {
-        (1_u8 + (seed.low % ORIENTATION_COUNT.into()).try_into().unwrap()).into()
+    fn draw(seed: u128) -> Orientation {
+        (1_u8 + (seed % ORIENTATION_COUNT.into()).try_into().unwrap()).into()
     }
 }
 

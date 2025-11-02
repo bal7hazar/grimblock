@@ -19,4 +19,14 @@ pub impl LargeCorner of PieceTrait {
             _ => 0,
         }
     }
+
+    #[inline]
+    fn size(orientation: Orientation) -> (u8, u8) {
+        (3, 3)
+    }
+
+    #[inline]
+    fn score() -> u8 {
+        5
+    }
 }
