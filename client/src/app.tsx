@@ -15,12 +15,12 @@ import {
   DEFAULT_CHAIN_ID,
   getContractAddress,
 } from "@/config";
-import { Game } from "@/pages/game";
 import { Home } from "@/pages/home";
 import { queryClient } from "@/queries";
 import { DojoSdkProviderInitialized } from "@/contexts/dojo";
 import { EntitiesProvider } from "@/contexts/entities";
 import { NAMESPACE } from "@/constants";
+import { shortString } from "starknet";
 
 const provider = jsonRpcProvider({
   rpc: (chain: Chain) => {
@@ -44,9 +44,10 @@ const buildPolicies = () => {
     contracts: {
       [gameAddress]: {
         methods: [
-          { entrypoint: "start" },
-          { entrypoint: "set" },
-          { entrypoint: "apply" },
+          { entrypoint: "spawn" },
+          { entrypoint: "rename" },
+          { entrypoint: "create" },
+          { entrypoint: "place" },
         ],
       },
     },
@@ -70,7 +71,7 @@ const buildChains = () => {
 const options: ControllerOptions = {
   defaultChainId: DEFAULT_CHAIN_ID,
   chains: buildChains(),
-  policies: buildPolicies(),
+  policies: DEFAULT_CHAIN_ID === shortString.encodeShortString("SN_MSEPOLIA") ? undefined : buildPolicies(),
   preset: "grim-block",
   namespace: "GRIMBLOCK",
   slot: "grimblock",
@@ -94,9 +95,6 @@ function App() {
               <Router>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/:gameId" element={<Game />} />
-                  {/* <Route path="/selection" element={<Selection />} />
-                  <Route path="/factories" element={<Factories />} /> */}
                 </Routes>
               </Router>
             </EntitiesProvider>

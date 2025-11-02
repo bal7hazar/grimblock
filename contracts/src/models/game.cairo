@@ -96,6 +96,9 @@ pub impl GameImpl of GameTrait {
         let mut pieces: Array<u8> = Packer::unpack(self.pieces, SUBPACK_SIZE);
         let mut over = true;
         while let Option::Some(packed) = pieces.pop_front() {
+            if packed == 0 {
+                continue;
+            }
             let piece: Piece = (packed % PIECE_SIZE).into();
             let orientation: Orientation = (packed / PIECE_SIZE).into();
             // FIXMEL: u128 temporary

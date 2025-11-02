@@ -8,7 +8,7 @@ export const Home = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="w-full h-full overflow-y-auto select-none">
       <Header 
         onShowPieceShapes={() => setShowPieceDebug(true)}
         onShowLeaderboard={() => setShowLeaderboard(true)}
