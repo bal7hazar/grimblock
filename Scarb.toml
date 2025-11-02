@@ -1,0 +1,23 @@
+[workspace]
+members = ["contracts"]
+description = "Grim Block"
+homepage = "https://github.com/bal7hazar/grimblock"
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024_07"
+
+[workspace.dependencies]
+dojo = "1.7.2"
+dojo_cairo_macros = "1.7.2"
+dojo_cairo_test = "1.7.2"
+starknet = "^2.13"
+cairo_test = "^2.13"
+
+[workspace.tool.fmt]
+sort-module-level-items = true
+
+[profile.mainnet]
+
+[tool.scarb]
+allow-prebuilt-plugins = ["dojo_cairo_macros"]
