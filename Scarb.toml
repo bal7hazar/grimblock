@@ -8,15 +8,16 @@ version = "0.0.0"
 edition = "2024_07"
 
 [workspace.dependencies]
-dojo = "1.7.2"
-dojo_cairo_macros = "1.7.2"
-dojo_cairo_test = "1.7.2"
-starknet = "^2.13"
-cairo_test = "^2.13"
+dojo = "=1.7.2"
+dojo_cairo_macros = "=1.7.1"
+dojo_cairo_test = "=1.7.2"
+starknet = "=2.13.1"
+cairo_test = "=2.13.1"
 
 [workspace.tool.fmt]
 sort-module-level-items = true
 
+[profile.sepolia]
 [profile.mainnet]
 
 [tool.scarb]

@@ -68,9 +68,7 @@ pub mod PlayableComponent {
         }
 
         #[inline]
-        fn create(
-            ref self: ComponentState<TContractState>, world: WorldStorage, seed: felt252,
-        ) -> u32 {
+        fn create(ref self: ComponentState<TContractState>, world: WorldStorage) -> u32 {
             // [Setup] Store
             let mut store = StoreImpl::new(world);
 

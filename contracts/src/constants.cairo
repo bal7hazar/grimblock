@@ -8,6 +8,6 @@ pub const PIECE_SIZE: u8 = 16; // 2 ** 4
 pub const ORIENTATION_SIZE: u8 = 8; // 2 ** 3
 pub const SUBPACK_SIZE: u32 = 256; // 2 ** 8
 
-pub fn NAMESPACE() -> felt252 {
-    'GRIMBLOCK'
+pub fn NAMESPACE() -> ByteArray {
+    "GRIMBLOCK"
 }
