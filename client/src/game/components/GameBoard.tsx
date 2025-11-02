@@ -37,15 +37,21 @@ export const GameBoard: React.FC = () => {
     return players.find(p => p.id === addressFelt);
   }, [address, players]);
 
-  // Get the latest game (highest id)
+  // Get the latest game for the current player (highest id)
   const latestGame = useMemo(() => {
-    if (!games || games.length === 0) return null;
-    const latest = games.reduce((latest, game) => 
+    if (!games || games.length === 0 || !currentPlayer) return null;
+    
+    // Filter games for current player only
+    const playerGames = games.filter(game => game.player_id === currentPlayer.id);
+    
+    if (playerGames.length === 0) return null;
+    
+    const latest = playerGames.reduce((latest, game) => 
       game.id > latest.id ? game : latest
     );
-    console.log({ game: latest});
+    console.log({ game: latest, playerGames: playerGames.length});
     return latest;
-  }, [games]);
+  }, [games, currentPlayer]);
 
   // Keep stable piece IDs across re-renders
   const pieceIdsRef = useRef<Map<string, string>>(new Map());
