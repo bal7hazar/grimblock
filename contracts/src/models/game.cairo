@@ -13,6 +13,7 @@ pub mod Errors {
     pub const GAME_NOT_STARTED: felt252 = 'Game: not started';
     pub const GAME_ALREADY_STARTED: felt252 = 'Game: already started';
     pub const GAME_INVALID_PLAYER: felt252 = 'Game: invalid player';
+    pub const GAME_INVALID_PIECE: felt252 = 'Game: invalid piece';
 }
 
 #[generate_trait]
@@ -39,14 +40,18 @@ pub impl GameImpl of GameTrait {
 
     #[inline]
     fn place(ref self: Game, piece_index: u8, grid_index: u8) {
-        // [Effect] Update the grid
+        // [Check] Piece is valid
         let mut pieces: Array<u8> = Packer::unpack(self.pieces, SUBPACK_SIZE);
         let packed = *pieces.at(piece_index.into());
+        assert(packed != 0, Errors::GAME_INVALID_PIECE);
+        // [Effect] Update the grid
         let piece: Piece = (packed % PIECE_SIZE).into();
         let orientation: Orientation = (packed / PIECE_SIZE).into();
-        self.grid = Grid::insert(self.grid, PieceTrait::get(piece, orientation), grid_index);
-        let (grid, line_count) = Grid::update(self.grid, DEFAULT_GRID_SIZE);
-        self.grid = grid;
+        // FIXMEL: u128 temporary
+        let mut grid: u64 = self.grid.try_into().unwrap();
+        grid = Grid::insert(grid, PieceTrait::get(piece, orientation), grid_index);
+        let (grid, line_count) = Grid::update(grid, DEFAULT_GRID_SIZE);
+        self.grid = grid.into();
         let score = PieceTrait::score(piece).into()
             + self.combo * line_count.into() * DEFAULT_LINE_SCORE;
         self.score += score.into();
@@ -56,15 +61,21 @@ pub impl GameImpl of GameTrait {
         }
         // [Effect] Remove the piece from the pieces
         let mut new_pieces = array![];
+        let mut index = 0;
+        let mut missing: u32 = DEFAULT_DRAW_COUNT.into() - pieces.len();
         while let Option::Some(packed) = pieces.pop_front() {
-            if packed != piece_index {
+            if index != piece_index && packed != 0 {
                 new_pieces.append(packed);
+            } else {
+                new_pieces.append(0);
+                missing += 1;
             }
+            index += 1;
         }
         // [Effect] Pack the remaining pieces or draw new ones
         self
             .pieces =
-                if new_pieces.is_empty() {
+                if missing == DEFAULT_DRAW_COUNT.into() {
                     // [Effect] Reset combo counter if the streak is broken
                     if !self.streak {
                         self.combo = 0;
@@ -83,12 +94,13 @@ pub impl GameImpl of GameTrait {
     #[inline]
     fn assess(ref self: Game) {
         let mut pieces: Array<u8> = Packer::unpack(self.pieces, SUBPACK_SIZE);
-        let mut over = false;
+        let mut over = true;
         while let Option::Some(packed) = pieces.pop_front() {
             let piece: Piece = (packed % PIECE_SIZE).into();
             let orientation: Orientation = (packed / PIECE_SIZE).into();
-            over = over
-                & Grid::is_over(self.grid, DEFAULT_GRID_SIZE, PieceTrait::get(piece, orientation));
+            // FIXMEL: u128 temporary
+            let grid: u64 = self.grid.try_into().unwrap();
+            over = over & Grid::is_over(grid, DEFAULT_GRID_SIZE, piece.get(orientation));
         }
         self.over = over;
     }
@@ -146,5 +158,71 @@ mod tests {
         assert_eq!(game.pieces, 0);
         game.start();
         assert_eq!(game.pieces != 0, true);
+    }
+
+    #[test]
+    fn test_game_place_first() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.pieces = 0x134632;
+        game.place(0, 0);
+        assert_eq!(game.pieces, 0x134600);
+    }
+
+    #[test]
+    fn test_game_place_last() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.pieces = 0x134632;
+        game.place(2, 0);
+        assert_eq!(game.pieces, 0x4632);
+    }
+
+    #[test]
+    fn test_game_place_all() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.pieces = 4063294;
+        game.place(0, 40);
+        game.place(1, 32);
+        game.seed = 0x05cfe5c5398881dba68c7644468cf2c208bf12b98486ed66a8613f95c8dcced9;
+        game.place(2, 16);
+        game.assess();
+        assert_eq!(game.over, false);
+        // game.pieces = 4063294;
+    // game.place(2, 32);
+    // game.place(1, 35);
+    // game.place(0, 39);
+    // game.assess();
+    // assert_eq!(game.over, false);
+    }
+
+    #[test]
+    fn test_game_place_case_002() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.grid = 0b11110000_00000000_00000000_00000000_00000000_01010001_01010000_00000000;
+        game.pieces = 0x13;
+        game.place(0, 8);
+    }
+
+    #[test]
+    fn test_game_place_case_003() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.grid = 0b00111111_00111111_10101111_10101111_10100111_10110111_10100110_10010000;
+        game.pieces = 0b0010_0001;
+        game.assess();
+        assert_eq!(game.over, true);
+    }
+
+    #[test]
+    fn test_game_place_case_004() {
+        let mut game = GameTrait::new(PLAYER_ID, GAME_ID, SEED);
+        game.start();
+        game.grid = 0b11101000_00111111_11110111_01100111_01100011_01111011_00001001_00001001;
+        game.pieces = 0b0001_0100_0100_1011; // Up Corner + Right SuperHero
+        game.assess();
+        assert_eq!(game.over, false);
     }
 }

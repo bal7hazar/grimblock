@@ -1,6 +1,6 @@
 [world]
 name = "Grim Block"
-seed = "grimblock-v0.0.0"
+seed = "grimblock-v0.0.1"
 description = "Grim Block"
 website = "https://grimblock.gg"
 
@@ -9,7 +9,7 @@ default = "GRIMBLOCK"
 
 [env]
 rpc_url = "https://api.cartridge.gg/x/starknet/sepolia"
-world_address = "0x07b5bf434c7fa4a32849b6f38edcfa89619b2b9d2645b32653822c21b20119ce"
+world_address = "0x00d62ce2486c4ba0caaa0f63013044b16a70eb269cf76c832893b1df6e3f23f0"
 account_address = "0x059b1a0c489b635d7c7f43594d187362ddd2dcea6c82db4eef2579fd185b3753"
 keystore_path = "./keystore_sepolia.json"
 

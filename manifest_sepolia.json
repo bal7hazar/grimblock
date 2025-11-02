@@ -1,8 +1,8 @@
 {
   "world": {
     "class_hash": "0x33c71814820f0fdb8e9f890749fc9698096aa6dc3c5f60aeb0f16ff4b30707f",
-    "address": "0x7b5bf434c7fa4a32849b6f38edcfa89619b2b9d2645b32653822c21b20119ce",
-    "seed": "grimblock-v0.0.0",
+    "address": "0xd62ce2486c4ba0caaa0f63013044b16a70eb269cf76c832893b1df6e3f23f0",
+    "seed": "grimblock-v0.0.1",
     "name": "Grim Block",
     "entrypoints": [
       "uuid",
@@ -1490,8 +1490,8 @@
   },
   "contracts": [
     {
-      "address": "0x744ebfb8aada46e148c55eeaea19d4ceebc011dc0f9ef0a48ca81e80085f4e2",
-      "class_hash": "0xa5e0d66f10b2e9a1a5f332f02d18842e0e4fc55b3210e1bbb1250264c6b33a",
+      "address": "0x4503962943fe3c7ec7e1b1e16b23570ef1671d2660c8f2fbf127294d920f8fc",
+      "class_hash": "0x49f333c4d23e323dbe4364bdb70eddc584cd5ad5e6b7c5114d169e4101b3212",
       "abi": [
         {
           "type": "impl",
@@ -1755,7 +1755,7 @@
   "models": [
     {
       "members": [],
-      "class_hash": "0x58293b2b73cbe1f0876d690a761e1f3b25f4688fb3fd89f9b46fbf15e01a1b9",
+      "class_hash": "0x56e920526036cf807169ac0ad1b77187c32b7eab0325c387ab201d619861d2d",
       "tag": "GRIMBLOCK-Game",
       "selector": "0x6acb73dcacf07c5996307794a6c9a9f4246b7a775b7330e7f8ad5ec4f7edd09"
     },

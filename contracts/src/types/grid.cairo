@@ -342,6 +342,31 @@ mod tests {
     }
 
     #[test]
+    fn test_grid_size_corner() {
+        let orientation = Orientation::Up;
+        let piece = Piece::Corner;
+        let (height, width) = GridTrait::size(piece.get(orientation), GRID_SIZE);
+        let (ref_height, ref_width) = piece.size(orientation);
+        assert_eq!(height, ref_height);
+        assert_eq!(width, ref_width);
+        let orientation = Orientation::Down;
+        let (height, width) = GridTrait::size(piece.get(orientation), GRID_SIZE);
+        let (ref_height, ref_width) = piece.size(orientation);
+        assert_eq!(height, ref_height);
+        assert_eq!(width, ref_width);
+        let orientation = Orientation::Left;
+        let (height, width) = GridTrait::size(piece.get(orientation), GRID_SIZE);
+        let (ref_height, ref_width) = piece.size(orientation);
+        assert_eq!(height, ref_height);
+        assert_eq!(width, ref_width);
+        let orientation = Orientation::Right;
+        let (height, width) = GridTrait::size(piece.get(orientation), GRID_SIZE);
+        let (ref_height, ref_width) = piece.size(orientation);
+        assert_eq!(height, ref_height);
+        assert_eq!(width, ref_width);
+    }
+
+    #[test]
     fn test_grid_mirror_horizontal() {
         let x = 0b1100_1100_1100_1100;
         let y = _mirror_horizontal(x);
@@ -361,5 +386,19 @@ mod tests {
         let y = _mirror_horizontal(x);
         let z = _mirror_vertical(y);
         assert_eq!(z, 0b0000_0000_0001_0011);
+    }
+
+    #[test]
+    fn test_grid_is_over() {
+        let grid = 0b00111111_00111111_10101111_10101111_10100111_10110111_10100110_10010000;
+        let piece = Piece::BigBoy.get(Orientation::Down);
+        assert_eq!(GridTrait::is_over(grid, GRID_SIZE, piece), true);
+    }
+
+    #[test]
+    fn test_grid_is_over_corner_false() {
+        let grid = 0b11101000_00111111_11110111_01100111_01100011_01111011_00001001_00001001;
+        let piece = Piece::Corner.get(Orientation::Up);
+        assert_eq!(GridTrait::is_over(grid, GRID_SIZE, piece), false);
     }
 }

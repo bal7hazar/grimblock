@@ -18,6 +18,6 @@ pub struct Game {
     pub combo: u16,
     pub score: u32,
     pub pieces: u32,
-    pub grid: u64,
+    pub grid: u128,
     pub seed: felt252,
 }
